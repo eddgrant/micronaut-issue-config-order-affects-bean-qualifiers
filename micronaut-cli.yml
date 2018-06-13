@@ -1,0 +1,5 @@
+profile: function-aws
+defaultPackage: uk.gov.hmrc.releasesclient
+---
+testFramework: spock
+sourceLanguage: groovy

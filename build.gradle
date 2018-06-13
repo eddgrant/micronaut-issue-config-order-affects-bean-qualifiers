@@ -1,0 +1,87 @@
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.4"
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.5.RELEASE"
+        classpath "de.sebastianboegl.gradle.plugins:shadow-log4j-transformer:2.1.1"
+        classpath "jp.classmethod.aws:gradle-aws-plugin:0.38"
+    }
+}
+
+version "0.1"
+group "uk.gov.hmrc.releasesclient"
+
+apply plugin:"io.spring.dependency-management"
+apply plugin:"com.github.johnrengelman.shadow"
+apply plugin:"application"
+apply plugin:"de.sebastianboegl.shadow.transformer.log4j"
+apply plugin:"jp.classmethod.aws.lambda"
+apply plugin:"groovy"
+
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://jcenter.bintray.com" }
+}
+
+dependencyManagement {
+    imports {
+        //mavenBom 'io.micronaut:bom:1.0.0.M1'
+        mavenBom 'io.micronaut:bom:1.0.0.BUILD-SNAPSHOT'
+    }
+}
+
+dependencies {
+    //compile 'org.codehaus.groovy:groovy-all:2.4.12'
+    compile "io.micronaut:function-groovy"
+    compile "io.micronaut:runtime-groovy"
+    compile "io.micronaut:http-client"
+    compile "io.micronaut:validation"
+    compile "io.micronaut.configuration:hibernate-validator"
+
+    compileOnly "io.micronaut:inject-groovy"
+
+    runtime "ch.qos.logback:logback-classic:1.2.3"
+    runtime "com.amazonaws:aws-lambda-java-log4j2:1.0.0"
+    runtime "org.apache.logging.log4j:log4j-slf4j-impl:2.9.1"
+
+    testCompile "io.micronaut:function-client"
+    testCompile "io.micronaut:inject-groovy"
+    testCompile("org.spockframework:spock-core:1.1-groovy-2.4") {
+        exclude group: "org.codehaus.groovy", module: "groovy-all"
+    }
+
+    testRuntime "io.micronaut:http-server-netty"
+    testRuntime "io.micronaut:function-web"
+}
+
+shadowJar {
+    mergeServiceFiles()
+}
+import jp.classmethod.aws.gradle.lambda.AWSLambdaMigrateFunctionTask
+import com.amazonaws.services.lambda.model.Runtime
+
+
+mainClassName = "uk.gov.hmrc.releasesclient.ReportAllServiceStatesFunction"
+applicationDefaultJvmArgs = [""]
+
+jar {
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+}
+
+/*task deploy(type: AWSLambdaMigrateFunctionTask, dependsOn: shadowJar) {
+    functionName = "hello-world"
+    handler = "hello.world.HelloWorldFunction::helloWorld"
+    role = "arn:aws:iam::${aws.accountId}:role/lambda_basic_execution"
+    runtime = Runtime.Java8
+    zipFile = shadowJar.archivePath
+    memorySize = 256
+    timeout = 60
+}*/
