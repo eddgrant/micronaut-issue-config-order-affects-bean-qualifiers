@@ -13,7 +13,7 @@ buildscript {
 }
 
 version "0.1"
-group "uk.gov.hmrc.releasesclient"
+group "com.eddgrant.releasesclient"
 
 apply plugin:"io.spring.dependency-management"
 apply plugin:"com.github.johnrengelman.shadow"
@@ -55,9 +55,11 @@ dependencies {
     testCompile("org.spockframework:spock-core:1.1-groovy-2.4") {
         exclude group: "org.codehaus.groovy", module: "groovy-all"
     }
+    testCompile 'net.bytebuddy:byte-buddy:1.8.12'
 
     testRuntime "io.micronaut:http-server-netty"
     testRuntime "io.micronaut:function-web"
+
 }
 
 shadowJar {
@@ -67,7 +69,7 @@ import jp.classmethod.aws.gradle.lambda.AWSLambdaMigrateFunctionTask
 import com.amazonaws.services.lambda.model.Runtime
 
 
-mainClassName = "uk.gov.hmrc.releasesclient.ReportAllServiceStatesFunction"
+mainClassName = "this-is-not-relevant-here"
 applicationDefaultJvmArgs = [""]
 
 jar {

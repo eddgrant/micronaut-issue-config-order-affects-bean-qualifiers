@@ -1,0 +1,19 @@
+# Steps to reproduce:
+#
+# 1: Run DeploymentServiceClientSpec. It should pass.
+# 2: Comment lines 7 - 11 and uncomment lines 13 - 17
+# 3: Re-run DeploymentServiceClientSpec. It will now fail.
+
+deploymentservice.client.public.endpoint: https://deployments-service.public.my-internal-domain/
+deploymentservice.client.public-rate.endpoint: https://deployments-service.public-rate.my-internal-domain/
+deploymentservice.client.public-monolith.endpoint: https://deployments-service.public-monolith.my-internal-domain/
+deploymentservice.client.protected.endpoint: https://deployments-service.protected.my-internal-domain/
+deploymentservice.client.protected-rate.endpoint: https://deployments-service.protected-rate.my-internal-domain/
+
+#deploymentservice.client.protected-rate.endpoint: https://deployments-service.protected-rate.my-internal-domain/
+#deploymentservice.client.protected.endpoint: https://deployments-service.protected.my-internal-domain/
+#deploymentservice.client.public-monolith.endpoint: https://deployments-service.public-monolith.my-internal-domain/
+#deploymentservice.client.public-rate.endpoint: https://deployments-service.public-rate.my-internal-domain/
+#deploymentservice.client.public.endpoint: https://deployments-service.public.my-internal-domain/
+
+
